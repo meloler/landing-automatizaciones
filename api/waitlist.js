@@ -1,4 +1,7 @@
-// Vercel serverless (CommonJS) + parseo manual + reenvío a Google Sheets (Apps Script)
+// Vercel Serverless Function (Node.js CommonJS)
+// - Parseo manual del body (no Next.js)
+// - Reenvío opcional a Google Apps Script (Sheets) con token en la URL
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -17,18 +20,14 @@ module.exports = async (req, res) => {
     const payload = { name, email, note, source, at: new Date().toISOString() };
     console.log('[waitlist]', payload);
 
-    // Reenvío a Google Apps Script si está configurado
+    // Reenvío a Google Sheets (Apps Script) si está configurado
     if (process.env.WEBHOOK_URL) {
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Webhook-Token': process.env.WEBHOOK_TOKEN || ''
-      };
-      const resp = await fetch(process.env.WEBHOOK_URL, {
+      const url = `${process.env.WEBHOOK_URL}?token=${encodeURIComponent(process.env.WEBHOOK_TOKEN || '')}`;
+      const resp = await fetch(url, {
         method: 'POST',
-        headers,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      // --- LOG extra para depurar ---
       const txt = await resp.text().catch(() => '');
       console.log('[webhook]', resp.status, txt);
     } else {
@@ -44,12 +43,14 @@ module.exports = async (req, res) => {
   }
 };
 
+// Utilidad: leer y parsear JSON del body en funciones Node puras
 function readJson(req) {
   return new Promise((resolve, reject) => {
     let data = '';
     req.on('data', chunk => (data += chunk));
     req.on('end', () => {
-      try { resolve(data ? JSON.parse(data) : {}); } catch (e) { reject(e); }
+      try { resolve(data ? JSON.parse(data) : {}); }
+      catch (e) { reject(e); }
     });
     req.on('error', reject);
   });
