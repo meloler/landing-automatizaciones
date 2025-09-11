@@ -1,4 +1,4 @@
-// Función Node.js para Vercel (CommonJS + parseo manual de body)
+// Vercel serverless (CommonJS) + parseo manual + reenvío a Google Sheets (Apps Script)
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -14,15 +14,25 @@ module.exports = async (req, res) => {
       return res.json({ ok: false, error: 'Faltan campos' });
     }
 
-    console.log('[waitlist]', { name, email, note, source, at: new Date().toISOString() });
+    const payload = { name, email, note, source, at: new Date().toISOString() };
+    console.log('[waitlist]', payload);
 
-    // Opcional: reenviar a un webhook (Apps Script → Sheets)
+    // Reenvío a Google Apps Script si está configurado
     if (process.env.WEBHOOK_URL) {
-      await fetch(process.env.WEBHOOK_URL, {
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Webhook-Token': process.env.WEBHOOK_TOKEN || ''
+      };
+      const resp = await fetch(process.env.WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, note, source, at: new Date().toISOString() })
+        headers,
+        body: JSON.stringify(payload)
       });
+      // --- LOG extra para depurar ---
+      const txt = await resp.text().catch(() => '');
+      console.log('[webhook]', resp.status, txt);
+    } else {
+      console.warn('WEBHOOK_URL no definido; no se envía a Sheets');
     }
 
     res.statusCode = 200;
@@ -34,17 +44,12 @@ module.exports = async (req, res) => {
   }
 };
 
-// Lee el body y lo parsea a JSON
 function readJson(req) {
   return new Promise((resolve, reject) => {
     let data = '';
     req.on('data', chunk => (data += chunk));
     req.on('end', () => {
-      try {
-        resolve(data ? JSON.parse(data) : {});
-      } catch (e) {
-        reject(e);
-      }
+      try { resolve(data ? JSON.parse(data) : {}); } catch (e) { reject(e); }
     });
     req.on('error', reject);
   });
