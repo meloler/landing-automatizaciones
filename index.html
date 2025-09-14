@@ -3,294 +3,146 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Automatizaciones para PYMEs · Ahorra horas cada semana</title>
+  <title>Facturas ordenadas · Ahorra tiempo y evita perder documentos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0f172a; /* slate-900 */
-      --card:#0b1220; /* darker card */
-      --muted:#94a3b8; /* slate-400 */
-      --text:#e2e8f0; /* slate-200 */
-      --primary:#22d3ee; /* cyan-400 */
-      --accent:#a78bfa; /* violet-400 */
+      --bg:#0f172a;
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --text:#e2e8f0;
+      --primary:#22d3ee;
+      --accent:#a78bfa;
       --ring:rgba(34,211,238,.35);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
-      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color:var(--text);
+      margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text);
       background: radial-gradient(1000px 600px at 10% -10%, rgba(167,139,250,.15), transparent),
                   radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent),
                   var(--bg);
     }
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     .hero{display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;text-align:center;padding:64px 0}
-    .hero h1{font-size: clamp(28px, 4vw, 48px); line-height:1.05; margin:0 0 12px; width:100%}
-    .hero p{color:var(--muted); font-size: clamp(16px, 2.4vw, 18px); margin:0 0 18px; width:100%}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:22px; box-shadow:0 10px 30px rgba(2,6,23,.35); position:relative; z-index:0}
-    .cta{display:flex; gap:14px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:8px}
-    .btn{appearance:none;border:0;border-radius:14px;padding:16px 22px;font-weight:700;font-size:1.05rem;cursor:pointer;transition:.2s transform, .2s box-shadow;white-space:nowrap}
-    .btn-primary{background:linear-gradient(90deg, var(--primary), var(--accent)); color:#0b1220; box-shadow:0 0 0 0 rgba(0,0,0,0)}
-    .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 25px var(--ring)}
+    .hero h1{font-size: clamp(28px, 4vw, 48px); line-height:1.05; margin:0 0 12px}
+    .hero p{color:var(--muted); font-size: clamp(16px, 2.4vw, 18px); margin:0 0 18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:22px; box-shadow:0 10px 30px rgba(2,6,23,.35)}
+    .cta{display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:8px}
+    .btn{border:0;border-radius:14px;padding:16px 22px;font-weight:700;font-size:1.05rem;cursor:pointer;transition:.2s}
+    .btn-primary{background:linear-gradient(90deg, var(--primary), var(--accent)); color:#0b1220}
     .btn-ghost{background:transparent;color:var(--text); border:1px solid rgba(255,255,255,.14)}
-    .trust{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:14px;margin-top:10px}
-    .section{padding:28px 0; position:relative; isolation:isolate}
+    .trust{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+    .section{padding:28px 0}
     .grid{display:grid; gap:16px}
-    @media (min-width: 760px){ .grid-3{grid-template-columns: repeat(3, 1fr);} }
+    @media(min-width:760px){.grid-3{grid-template-columns:repeat(3,1fr)}}
     .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12); color:var(--muted); font-size:12px}
     .mini{font-size:14px;color:var(--muted)}
-    .step{display:flex; gap:12px; align-items:flex-start}
-    .step span{flex:0 0 28px; height:28px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(34,211,238,.12); border:1px solid var(--ring); font-weight:700}
+    .steps{display:grid;gap:18px}
+    @media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}}
+    .step-card{padding:22px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);text-align:center}
+    .step-num{width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(34,211,238,.12);border:1px solid var(--ring);font-weight:700;margin-bottom:8px}
     footer{color:var(--muted); font-size:12px; padding:28px 0 40px; text-align:center}
-    .badge{font-size:12px; color:#0b1220; background:linear-gradient(90deg, var(--primary), var(--accent)); padding:6px 10px; border-radius:999px; font-weight:700; display:inline-block}
-    /* --- Steps infographic --- */
-    .steps{display:grid;gap:18px}
-    @media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}}
-    .step-card{position:relative;text-align:center;padding:22px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(2,6,23,.35)}
-    .step-num{width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(34,211,238,.12);border:1px solid var(--ring);font-weight:700;margin-bottom:8px}
-    @media(min-width:900px){
-      .step-card:not(:last-child)::after{content:"";position:absolute;right:-14px;top:50%;width:28px;height:2px;background:linear-gradient(90deg, var(--primary), var(--accent));transform:translateY(-50%)}
-      .step-card:not(:last-child)::before{content:"";position:absolute;right:-14px;top:50%;border:6px solid transparent;border-left-color:var(--accent);transform:translate(100%,-50%)}
-    }
-    @media(max-width:899px){
-      .steps{grid-template-columns:1fr}
-      .step-card{padding:20px}
-      .step-card:not(:last-child)::after{content:"";position:absolute;left:50%;top:calc(100% + 6px);width:2px;height:24px;background:linear-gradient(180deg, var(--primary), var(--accent));transform:translateX(-50%)}
-      .step-card:not(:last-child)::before{content:"";position:absolute;left:50%;top:calc(100% + 30px);border:6px solid transparent;border-top-color:var(--accent);transform:translateX(-50%)}
-    }
-    /* --- Fixes mobile overlapping & spacing --- */
-    .wrap, .section, .card, .steps, .step-card{position:relative; z-index:1}
-    .section, .steps{overflow:visible}
-    #pasos.section{padding-bottom:36px}
-    @media(max-width:899px){
-      .hero{padding:52px 0 28px}
-      .section{padding:22px 0 28px}
-    }
-
-    /* --- Steps infographic (redeclared blocks retained as in original) --- */
-    .steps{display:grid;gap:18px}
-    @media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}}
-    .step-card{position:relative;text-align:center;padding:22px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(2,6,23,.35)}
-    .step-num{width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(34,211,238,.12);border:1px solid var(--ring);font-weight:700;margin-bottom:8px}
-    @media(min-width:900px){
-      .step-card:not(:last-child)::after{content:"";position:absolute;right:-14px;top:50%;width:28px;height:2px;background:linear-gradient(90deg, var(--primary), var(--accent));transform:translateY(-50%)}
-      .step-card:not(:last-child)::before{content:"";position:absolute;right:-14px;top:50%;border:6px solid transparent;border-left-color:var(--accent);transform:translate(100%,-50%)}
-    }
-    @media(max-width:899px){
-      .steps{grid-template-columns:1fr}
-      .step-card{padding:20px}
-      .step-card:not(:last-child)::after{content:"";position:absolute;left:50%;top:calc(100% + 4px);width:2px;height:18px;background:linear-gradient(180deg, var(--primary), var(--accent));transform:translateX(-50%)}
-      .step-card:not(:last-child)::before{content:"";position:absolute;left:50%;top:calc(100% + 24px);border:6px solid transparent;border-top-color:var(--accent);transform:translateX(-50%)}
-    }
-    /* Mobile overrides to fix overlap */
-    @media(max-width: 899px){
-      .step-card{padding:20px; margin:0 0 14px}
-      .step-card::after, .step-card::before{display:none !important}
-    }
-    /* --- Steps: Plan B (SVG connectors desktop, safe mobile) --- */
-    .steps-wrap{position:relative}
-    .steps-svg{position:absolute;inset:0;height:120px;top:50%;transform:translateY(-50%);pointer-events:none;display:none;z-index:0}
-    @media(min-width:900px){.steps-svg{display:block}}
-    .steps{position:relative; z-index:1; display:grid; gap:18px}
-    @media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}}
-    .step-card{position:relative;padding:22px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(2,6,23,.35)}
-    /* neutralize old pseudo connectors entirely */
-    .step-card::before,.step-card::after{display:none!important;content:none!important}
-    .step-num{width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(34,211,238,.12);border:1px solid var(--ring);font-weight:700;margin-bottom:8px}
-    /* mobile timeline inside each card */
-    .step-card{display:flex;gap:12px;align-items:flex-start}
-    .step-icon{display:block}
-    .step-icon svg{display:block;width:16px;height:56px}
-    .step-body{flex:1}
-    .step-title{font-weight:700;margin-bottom:6px}
-    @media(min-width:900px){
-      .step-card{display:block}
-      .step-icon{display:none}
-      .step-body{display:block}
-    }
-
-    /* Hero primary button larger & centered */
-    .hero .btn-primary{font-size:1.2rem; padding:18px 28px; min-width:clamp(220px, 60vw, 360px)}
-
-    /* Collapsible waitlist panel */
+    .badge{font-size:12px; color:#0b1220; background:linear-gradient(90deg, var(--primary), var(--accent)); padding:6px 10px; border-radius:999px; font-weight:700}
     .collapsible{max-height:0; overflow:hidden; transition:max-height .35s ease}
     .collapsible.open{max-height:420px}
-
-    /* iOS mobile band fix */
-    @media(max-width:899px){
-      body{background: var(--bg) !important}
-      .hero{position:relative}
-      .hero::after{content:"";position:absolute;inset:-60px -24px -20px -24px;pointer-events:none;z-index:0;
-        background: radial-gradient(560px 320px at 50% -10%, rgba(167,139,250,.18), transparent),
-                    radial-gradient(420px 260px at 80% 10%, rgba(34,211,238,.14), transparent);
-      }
-      .hero > *{position:relative;z-index:1}
-      .card{box-shadow:0 6px 18px rgba(2,6,23,.24)}
-    }
   </style>
-  <!-- Calendly embed (reemplaza la URL por la tuya) -->
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </head>
 <body>
   <div class="wrap">
-
-    <!-- HERO -->
     <section class="hero">
-      <div>
-        <span class="pill">⚙️ Automatizaciones prácticas para PYMEs</span>
-        <h1>Ahorra horas cada semana con automatizaciones sencillas.</h1>
-        <p>Facturas, correos y documentos organizados solos con IA ligera y herramientas que ya usas (Gmail, Drive, Sheets). Tú te enfocas en lo importante.</p>
-        <div class="cta">
-          <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/tu-usuario/15min'});return false;">Agendar 15′ gratis</button>
-          <button class="btn btn-ghost" onclick="toggleWaitlist()">Unirme a la lista de espera</button>
-        </div>
-
-        <!-- WAITLIST (Vercel + AJAX) -->
-        <div id="waitlist" class="collapsible">
-          <form id="waitlist-form" style="margin-top:14px" class="card">
-            <div style="display:grid;gap:12px;grid-template-columns:1fr">
-              <div>
-                <label for="wl-name" class="mini">Nombre</label>
-                <input id="wl-name" name="name" type="text" required placeholder="Tu nombre" />
-              </div>
-              <div>
-                <label for="wl-email" class="mini">Email</label>
-                <input id="wl-email" name="email" type="email" required placeholder="tucorreo@empresa.com" />
-              </div>
-              <div>
-                <label for="wl-note" class="mini">¿Qué te gustaría automatizar?</label>
-                <input id="wl-note" name="note" type="text" placeholder="Facturas, adjuntos, respuestas…" />
-              </div>
-              <input type="hidden" name="source" value="landing-hero" />
-              <button id="wl-submit" class="btn btn-primary" type="submit">Apuntarme a la lista</button>
-              <p id="wl-ok" class="mini" style="display:none;margin:4px 0 0;opacity:.9">¡Listo! Te avisaré cuando haya novedades.</p>
-              <p id="wl-err" class="mini" style="display:none;margin:4px 0 0;color:#fca5a5">Ups, algo falló. Inténtalo de nuevo.</p>
-            </div>
-            <div class="mini" style="margin-top:8px;opacity:.8">No spam. Solo te escribiré cuando haya novedades o plazas.</div>
-          </form>
-        </div>
-
-        <div class="trust">Funciona con: Gmail · Google Drive · Google Sheets · Google Calendar y Google Workspace</div>
+      <span class="pill">📂 Facturas sin estrés</span>
+      <h1>Olvídate de buscar y ordenar tus facturas cada trimestre.</h1>
+      <p>¿Autónomo o pyme? Seguro que te suena: llega el trimestre y toca rebuscar correos y papeles. Con mi solución tus facturas se guardan y ordenan solas en Drive y Sheets. Nunca pierdes ninguna.</p>
+      <div class="cta">
+        <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/tu-usuario/15min'});return false;">Agendar 15′ gratis</button>
+        <button class="btn btn-ghost" onclick="toggleWaitlist()">Unirme a la lista de espera</button>
       </div>
+
+      <div id="waitlist" class="collapsible">
+        <form id="waitlist-form" style="margin-top:14px" class="card">
+          <div style="display:grid;gap:12px">
+            <div><label class="mini" for="wl-name">Nombre</label><input id="wl-name" name="name" required placeholder="Tu nombre"/></div>
+            <div><label class="mini" for="wl-email">Email</label><input id="wl-email" name="email" type="email" required placeholder="tucorreo@empresa.com"/></div>
+            <div><label class="mini" for="wl-note">¿Qué te gustaría automatizar?</label><input id="wl-note" name="note" placeholder="Facturas, adjuntos…"/></div>
+            <input type="hidden" name="source" value="landing-hero" />
+            <button id="wl-submit" class="btn btn-primary" type="submit">Apuntarme a la lista</button>
+            <p id="wl-ok" class="mini" style="display:none;color:lightgreen">¡Listo! Te avisaré cuando haya novedades.</p>
+            <p id="wl-err" class="mini" style="display:none;color:#fca5a5">Ups, algo falló. Inténtalo de nuevo.</p>
+          </div>
+          <div class="mini" style="margin-top:8px">No spam. Solo te escribiré cuando haya novedades o plazas.</div>
+        </form>
+      </div>
+      <div class="trust">Funciona con: Gmail · Google Drive · Google Sheets</div>
     </section>
 
-    <!-- VALOR CLAVE -->
     <section class="section">
       <div class="grid grid-3">
-        <div class="card">
-          <strong>⏱️ Ahorro de tiempo inmediato</strong>
-          <div class="mini">Menos horas en tareas de bajo valor; más foco en ventas y clientes.</div>
-        </div>
-        <div class="card">
-          <strong>🧩 Con herramientas conocidas</strong>
-          <div class="mini">Nada raro: Gmail, Drive, Sheets y apps low‑code. Fácil de mantener.</div>
-        </div>
-        <div class="card">
-          <strong>🧾 Precio claro</strong>
-          <div class="mini">Piloto económico y, si encaja, implantación a medida sin sorpresas.</div>
-        </div>
+        <div class="card"><strong>⏱️ Cero horas perdidas</strong><div class="mini">Las facturas se guardan y etiquetan solas. Tú solo revisas.</div></div>
+        <div class="card"><strong>✅ Todo localizado</strong><div class="mini">Un archivo único en Drive+Sheets accesible desde cualquier dispositivo.</div></div>
+        <div class="card"><strong>😌 Tranquilidad trimestral</strong><div class="mini">Entrega al gestor en un clic, sin nervios de última hora.</div></div>
       </div>
     </section>
 
-    <!-- PASOS -->
     <section class="section" id="pasos">
       <div class="steps">
-        <div class="step-card">
-          <div class="step-num">1</div>
-          <div style="font-weight:700;margin-bottom:6px">Llamada de 15′</div>
-          <div class="mini">Me cuentas tu dolor y calculamos ahorro potencial.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <div style="font-weight:700;margin-bottom:6px">Propuesta simple</div>
-          <div class="mini">Solución, alcance y precio cerrado.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <div style="font-weight:700;margin-bottom:6px">Piloto rápido</div>
-          <div class="mini">Prueba funcional en días, sin complicarte.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">4</div>
-          <div style="font-weight:700;margin-bottom:6px">Implantación</div>
-          <div class="mini">Dejo todo listo y medimos el impacto.</div>
-        </div>
+        <div class="step-card"><div class="step-num">1</div><div><b>Llamada de 15′</b></div><div class="mini">Me cuentas tu situación y calculamos el tiempo que puedes ahorrar.</div></div>
+        <div class="step-card"><div class="step-num">2</div><div><b>Propuesta simple</b></div><div class="mini">Definimos la solución de guardado automático de facturas.</div></div>
+        <div class="step-card"><div class="step-num">3</div><div><b>Piloto rápido</b></div><div class="mini">En pocos días pruebas el sistema con facturas reales.</div></div>
+        <div class="step-card"><div class="step-num">4</div><div><b>Implantación</b></div><div class="mini">Dejo todo listo para que facturas y recibos se ordenen solos.</div></div>
       </div>
     </section>
 
-    <!-- CASOS REALES -->
     <section id="casos" class="section">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <h2 style="margin:0;font-size:22px">Casos reales</h2>
-        <span class="badge">Listos para adaptar a tu negocio</span>
+        <h2 style="margin:0">Casos reales</h2>
+        <span class="badge">Probado en negocios locales</span>
       </div>
       <div class="grid grid-3">
-        <div class="card">
-          <div style="font-weight:700;margin-bottom:6px">📂 Facturas que se ordenan solas</div>
-          <div class="mini">Clasificación automática por remitente, fecha y categoría. Adiós a perder facturas.</div>
-        </div>
-        <div class="card">
-          <div style="font-weight:700;margin-bottom:6px">💬 Respuestas a clientes en borrador</div>
-          <div class="mini">Borradores consistentes para reseñas e incidencias. El equipo solo revisa y envía.</div>
-        </div>
-        <div class="card">
-          <div style="font-weight:700;margin-bottom:6px">📧 Adjuntos a Drive y etiquetados</div>
-          <div class="mini">Todo lo que llega por correo se guarda y etiqueta por remitente y fecha.</div>
-        </div>
+        <div class="card"><b>📥 Correos con facturas</b><div class="mini">Las facturas van a la carpeta correcta sin tocar nada.</div></div>
+        <div class="card"><b>🗂️ Clasificación automática</b><div class="mini">Por remitente y fecha.</div></div>
+        <div class="card"><b>📊 Resumen en Sheets</b><div class="mini">Registro claro para compartir con tu gestor.</div></div>
       </div>
     </section>
 
-    <!-- CTA FINAL -->
     <section class="section" id="book">
       <div class="card" style="display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap">
         <div>
-          <div style="font-weight:700;font-size:18px;margin-bottom:6px">¿Vemos tu caso en 15 minutos?</div>
+          <div style="font-weight:700;font-size:18px;margin-bottom:6px">¿Quieres dejar de perder tiempo clasificando y buscando tus facturas?</div>
           <div class="mini">Sin compromiso. Si no te aporto ideas concretas, te invito a un café ☕.</div>
         </div>
         <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/tu-usuario/15min'});return false;">Agendar ahora</button>
       </div>
     </section>
 
-    <footer>
-      © 2025 · Automatizaciones para PYMEs · Hecho con cariño en Canarias
-    </footer>
+    <footer>© 2025 · Facturas ordenadas · Hecho en Canarias</footer>
   </div>
 
-  <!-- JS: toggleWaitlist + envío AJAX a /api/waitlist -->
   <script>
     function toggleWaitlist(){
-      var el = document.getElementById('waitlist');
+      const el=document.getElementById('waitlist');
       if(!el) return;
-      if(el.classList.contains('open')){ el.classList.remove('open'); }
-      else{ el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+      el.classList.toggle('open');
+      if(el.classList.contains('open')) el.scrollIntoView({behavior:'smooth'});
     }
-
-    // Enviar waitlist a API route de Vercel
     (function(){
-      const form = document.getElementById('waitlist-form');
+      const form=document.getElementById('waitlist-form');
       if(!form) return;
-      const ok  = document.getElementById('wl-ok');
-      const err = document.getElementById('wl-err');
-      const btn = document.getElementById('wl-submit');
-
-      form.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        ok.style.display='none'; err.style.display='none';
-        btn.disabled = true; btn.textContent = 'Enviando…';
-        const fd = new FormData(form);
-        const body = Object.fromEntries(fd.entries());
+      const ok=document.getElementById('wl-ok');
+      const err=document.getElementById('wl-err');
+      const btn=document.getElementById('wl-submit');
+      form.addEventListener('submit',async e=>{
+        e.preventDefault(); ok.style.display='none'; err.style.display='none';
+        btn.disabled=true; btn.textContent='Enviando…';
+        const fd=new FormData(form); const body=Object.fromEntries(fd.entries());
         try{
-          const r = await fetch('/api/waitlist', {
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body: JSON.stringify(body)
-          });
-          if(r.ok){ form.reset(); ok.style.display='block'; }
-          else   { err.style.display='block'; }
-        }catch(_){ err.style.display='block'; }
-        finally{ btn.disabled=false; btn.textContent='Apuntarme a la lista'; }
+          const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+          if(r.ok){form.reset(); ok.style.display='block';} else {err.style.display='block';}
+        }catch{err.style.display='block';}
+        finally{btn.disabled=false; btn.textContent='Apuntarme a la lista';}
       });
     })();
   </script>
