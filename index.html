@@ -47,6 +47,10 @@
     .badge{font-size:12px; color:#0b1220; background:linear-gradient(90deg, var(--primary), var(--accent)); padding:6px 10px; border-radius:999px; font-weight:700}
     .collapsible{max-height:0; overflow:hidden; transition:max-height .35s ease}
     .collapsible.open{max-height:420px}
+    /* Consentimiento */
+    .consent{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}
+    .consent input[type="checkbox"]{margin-top:3px}
+    .consent a{color:var(--text); text-decoration:underline}
   </style>
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
@@ -68,6 +72,15 @@
             <div><label class="mini" for="wl-name">Nombre</label><input id="wl-name" name="name" required placeholder="Tu nombre"/></div>
             <div><label class="mini" for="wl-email">Email</label><input id="wl-email" name="email" type="email" required placeholder="tucorreo@empresa.com"/></div>
             <div><label class="mini" for="wl-note">¿Qué te gustaría automatizar?</label><input id="wl-note" name="note" placeholder="Facturas, adjuntos…"/></div>
+
+            <!-- Consentimiento de privacidad (justo encima del botón) -->
+            <div class="consent">
+              <input id="wl-consent" name="consent" type="checkbox" value="yes" required />
+              <label for="wl-consent">
+                Acepto la <a href="/proteccion-de-datos.html" target="_blank" rel="noopener">política de protección de datos</a>.
+              </label>
+            </div>
+
             <input type="hidden" name="source" value="landing-hero" />
             <button id="wl-submit" class="btn btn-primary" type="submit">Apuntarme a la lista</button>
             <p id="wl-ok" class="mini" style="display:none;color:lightgreen">¡Listo! Te avisaré cuando haya novedades.</p>
