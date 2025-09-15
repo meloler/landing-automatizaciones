@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Preguntas Frecuentes · Facturas ordenadas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--text:#e2e8f0;--primary:#22d3ee;--accent:#a78bfa;--ring:rgba(34,211,238,.35)}
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text);
+      background: radial-gradient(1000px 600px at 10% -10%, rgba(167,139,250,.15), transparent),
+                  radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent), var(--bg)}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    h1{font-size:clamp(28px,4vw,40px);margin:10px 0}
+    a.btn{display:inline-block;border-radius:14px;padding:10px 14px;font-weight:700;border:1px solid rgba(255,255,255,.14);color:var(--text);text-decoration:none}
+    .mini{font-size:14px;color:var(--muted)}
+    .faq{margin-top:18px}
+    details{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;margin:12px 0}
+    summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-weight:700}
+    summary::-webkit-details-marker{display:none}
+    details[open]{box-shadow:0 10px 30px rgba(2,6,23,.35)}
+    .badge{font-size:12px;color:#0b1220;background:linear-gradient(90deg,var(--primary),var(--accent));padding:6px 10px;border-radius:999px;font-weight:700}
+    footer{color:var(--muted);font-size:12px;text-align:center;margin:28px 0 10px}
+    .kicker{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12); color:var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <span class="kicker">❓ Preguntas frecuentes</span>
+        <h1>FAQ · Facturas ordenadas</h1>
+        <p class="mini">Respuestas rápidas sobre cómo funciona el guardado y la clasificación automática de facturas.</p>
+      </div>
+      <nav>
+        <a class="btn" href="/index.html">← Volver a la web</a>
+        <a class="btn" href="/proteccion-datos.html" target="_blank" rel="noopener noreferrer">Protección de datos</a>
+      </nav>
+    </header>
+
+    <section class="faq">
+      <details>
+        <summary>¿Qué hace exactamente la solución?</summary>
+        <div class="mini" style="margin-top:8px">Detecta automáticamente correos con facturas/recibos, guarda los PDFs en Google Drive dentro de carpetas organizadas para que puedas compartirlas con tu gestor y registra cada entrada en Google Sheets (fecha, remitente, tipo).</div>
+      </details>
+
+      <details>
+        <summary>¿Qué necesito para usarla?</summary>
+        <div class="mini" style="margin-top:8px">Una cuenta de Google (Drive/Sheets/Gmail). Recomendado Google Workspace. También funciona con Gmail personal, aunque con algunos límites de cuota.</div>
+      </details>
+
+      <details>
+        <summary>¿Dónde se guardan mis datos?</summary>
+        <div class="mini" style="margin-top:8px">Los PDFs se almacenan en <b>tu</b> Google Drive y los apuntes en <b>tu</b> Google Sheets.</div>
+      </details>
+
+      <details>
+        <summary>¿Cumple RGPD?</summary>
+        <div class="mini" style="margin-top:8px">Sí ya que las facturas se quedan en tu entorno. En la web solo pedimos nombre y email con consentimiento explícito. Puedes ejercer tus derechos escribiendo a <a href="mailto:juansalanvila@gmail.com">juansalanvila@gmail.com</a>. Más info en <a href="/proteccion-datos.html" target="_blank" rel="noopener">Protección de datos</a>.</div>
+      </details>
+
+      <details>
+        <summary>¿Cómo se detectan las facturas?</summary>
+        <div class="mini" style="margin-top:8px">Mediante filtros/etiquetas en Gmail y un Apps Script que procesa adjuntos PDF mediante una llamada a una API a un sistema de visión por IA que ofrece Google</div>
+      </details>
+
+      <details>
+        <summary>¿Puedo seguir usando mi gestor de correo y Drive como siempre?</summary>
+        <div class="mini" style="margin-top:8px">Sí. El sistema trabaja en segundo plano sin cambiar tu flujo: tú sigues viendo tus correos y tu Drive igual; solo que ahora todo queda ordenado automáticamente.</div>
+      </details>
+
+      <details>
+        <summary>¿Qué soporte ofreces?</summary>
+        <div class="mini" style="margin-top:8px">Incluye una sesión de arranque para entender tus facturas y flujo de negocio y poder configurar la herramienta y una semana de soporte por email para ajustes finos una vez instalado. Opcional: mantenimiento mensual con mejoras y monitorización.</div>
+      </details>
+
+      <details>
+        <summary>¿Cuánto tarda la implantación?</summary>
+        <div class="mini" style="margin-top:8px">Normalmente unos 7-9 días laborables desde la llamada de arranque, dependiendo del volumen de proveedores y la estructura de carpetas.</div>
+      </details>
+
+      <details>
+        <summary>¿Qué coste tiene?</summary>
+        <div class="mini" style="margin-top:8px">Trabajo a precio cerrado tras la llamada de diagnóstico. La implantación de la herramienta + optimizaciones tiene un coste de 59. Luego existe un coste mensual que dependerá del volumen de documentos que procese el sistema. Pide presupuesto en la <a href="/index.html#book">sección de contacto</a>.</div>
+      </details>
+
+      <details>
+        <summary>¿Y si dejo de usarlo?</summary>
+        <div class="mini" style="margin-top:8px">Tu Drive y tus hojas siguen siendo tuyos. El sistema es reversible: basta con desactivar el Apps Script y los filtros de Gmail.</div>
+      </details>
+
+      <details>
+        <summary>¿Necesito dar accesos a mi cuenta?</summary>
+        <div class="mini" style="margin-top:8px">Sí, para la implantación ya que es necesario configurar tu entorno de Google Cloud Console. Todo ello bajo un NDA firmado por ambas partes.</div>
+      </details>
+
+      <details>
+        <summary>¿Se puede adaptar a mi negocio?</summary>
+        <div class="mini" style="margin-top:8px">Sí. Se pueden crear filtros personalizados y modificar ciertos aspectos de la herramienta.</div>
+      </details>
+
+      <details>
+        <summary>¿Qué límites tiene?</summary>
+        <div class="mini" style="margin-top:8px">Sujeto a cuotas de Gmail/Apps Script (envío/process diarios) y tamaño de PDFs. Para volúmenes altos, se pueden estudiar alternativas (AppSheet, Cloud Functions, colas).</div>
+      </details>
+
+      <details>
+        <summary>¿Cómo pruebo si me encaja?</summary>
+        <div class="mini" style="margin-top:8px">Agenda una llamada de 15′ sin coste desde la <a href="/index.html#book">web</a>. Te muestro un flujo real y estimamos ahorro.</div>
+      </details>
+
+      <div class="mini" style="margin-top:18px">¿No ves tu pregunta? Escríbeme a <a href="mailto:juansalanvila@gmail.com">juansalanvila@gmail.com</a>.</div>
+    </section>
+
+    <footer>
+      © 2025 · Facturas ordenadas · <span class="badge">FAQ</span>
+    </footer>
+  </div>
+</body>
+</html>
