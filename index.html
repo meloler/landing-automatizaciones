@@ -4,42 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Facturas ordenadas · Ahorra tiempo y evita perder documentos</title>
+
+  <!-- ===== Open Graph (WhatsApp / Facebook) ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://landing-automatizaciones.vercel.app/" />
+  <meta property="og:title" content="Facturas ordenadas · Ahorra tiempo y evita perder documentos" />
+  <meta property="og:description" content="Automatiza el guardado y la organización de tus facturas en Drive y Sheets. Cero estrés trimestral." />
+  <!-- Imagen cuadrada recomendada 1200x1200 -->
+  <meta property="og:image" content="https://landing-automatizaciones.vercel.app/favicon.pngv=2" />
+
+  <!-- ===== Twitter Cards (X) ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Facturas ordenadas · Ahorra tiempo y evita perder documentos" />
+  <meta name="twitter:description" content="Automatiza el guardado y la organización de tus facturas en Drive y Sheets." />
+  <meta name="twitter:image" content="https://landing-automatizaciones.vercel.app/favicon.pngv=2" />
+
+  <!-- Opcional: icono y color de tema -->
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    :root{
-      --bg:#0f172a;
-      --card:#0b1220;
-      --muted:#94a3b8;
-      --text:#e2e8f0;
-      --primary:#22d3ee;
-      --accent:#a78bfa;
-      --ring:rgba(34,211,238,.35);
-    }
+    :root{ --bg:#0f172a; --card:#0b1220; --muted:#94a3b8; --text:#e2e8f0; --primary:#22d3ee; --accent:#a78bfa; --ring:rgba(34,211,238,.35); }
     *{box-sizing:border-box}
-    body{
-      margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text);
-      background: radial-gradient(1000px 600px at 10% -10%, rgba(167,139,250,.15), transparent),
-                  radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent),
-                  var(--bg);
-    }
+    body{ margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text); background: radial-gradient(1000px 600px at 10% -10%, rgba(167,139,250,.15), transparent), radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent), var(--bg); }
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     .hero{display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;text-align:center;padding:64px 0}
     .hero h1{font-size: clamp(28px, 4vw, 48px); line-height:1.05; margin:0 0 12px}
     .hero p{color:var(--muted); font-size: clamp(16px, 2.4vw, 18px); margin:0 0 18px}
-
-    /* ==== VIDEO RESPONSIVE ==== */
     .video-wrap{width:100%;max-width:860px;margin:4px auto 8px}
-    .video{
-      position:relative; padding-top:56.25%; /* 16:9 */
-      border-radius:16px; overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.06);
-      box-shadow:0 10px 30px rgba(2,6,23,.35);
-    }
+    .video{ position:relative; padding-top:56.25%; border-radius:16px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06); box-shadow:0 10px 30px rgba(2,6,23,.35); }
     .video iframe{position:absolute; inset:0; width:100%; height:100%;}
-
     .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:22px; box-shadow:0 10px 30px rgba(2,6,23,.35)}
     .cta{display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:8px}
     .btn{border:0;border-radius:14px;padding:16px 22px;font-weight:700;font-size:1.05rem;cursor:pointer;transition:.2s}
@@ -60,11 +59,8 @@
     .collapsible{max-height:0; overflow:hidden; transition:max-height .35s ease}
     .collapsible.open{max-height:520px}
     .consent{font-size:12px;color:var(--muted);margin-top:6px}
-
-    /* === ENLACES EN BLANCO (global) === */
     a{ color:#ffffff; text-decoration:underline; }
     a:hover{ color:#ffffff; background:rgba(255,255,255,.08); }
-    /* Botones-enlace */
     a.btn{ color:#ffffff; text-decoration:none; }
     a.btn:hover{ background:rgba(255,255,255,.1); }
   </style>
@@ -77,37 +73,16 @@
       <span class="pill">📂 Facturas sin estrés</span>
       <h1>Olvídate de buscar y ordenar tus facturas cada trimestre.</h1>
       <p>¿Autónomo o pyme? Seguro que te suena: llega el trimestre y toca rebuscar correos y papeles. Con mi solución tus facturas se guardan y ordenan solas en Drive y Sheets. Nunca pierdes ninguna.</p>
-
-      <!-- === VIDEO (centrado y responsive) === -->
       <div class="video-wrap" aria-label="Vídeo de presentación">
         <div class="video">
-          <iframe
-            src="https://www.youtube.com/embed/EqQidVjCNb0?rel=0&modestbranding=1&playsinline=1"
-            title="Presentación · Facturas ordenadas"
-            loading="lazy"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/EqQidVjCNb0?rel=0&modestbranding=1&playsinline=1" title="Presentación · Facturas ordenadas" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
       </div>
-      <!-- === /VIDEO === -->
-
-      <!-- CTA con botón FAQ añadido -->
       <div class="cta">
-        <button class="btn btn-primary"
-          onclick="Calendly.initPopupWidget({url: 'https://calendly.com/juansalanvila/reunion-de-15-minutos'});return false;">
-          Agendar 15′ gratis
-        </button>
-
-        <button class="btn btn-ghost" onclick="toggleWaitlist()">
-          Solicitar más info.
-        </button>
-
-        <a class="btn btn-ghost" href="/faq.html">
-          ¿Dudas? <b>Ver FAQ</b>
-        </a>
+        <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/juansalanvila/reunion-de-15-minutos'});return false;">Agendar 15′ gratis</button>
+        <button class="btn btn-ghost" onclick="toggleWaitlist()">Solicitar más info.</button>
+        <a class="btn btn-ghost" href="/faq.html">¿Dudas? <b>Ver FAQ</b></a>
       </div>
-
       <div id="waitlist" class="collapsible">
         <form id="waitlist-form" style="margin-top:14px" class="card">
           <div style="display:grid;gap:12px">
@@ -128,7 +103,6 @@
       </div>
       <div class="trust">Funciona con: Gmail · Google Drive · Google Sheets</div>
     </section>
-
     <section class="section">
       <div class="grid grid-3">
         <div class="card"><strong>⏱️ Cero horas perdidas</strong><div class="mini">Las facturas se guardan y etiquetan solas. Tú solo revisas.</div></div>
@@ -136,7 +110,6 @@
         <div class="card"><strong>😌 Tranquilidad trimestral</strong><div class="mini">Entrega al gestor en un clic, sin nervios de última hora.</div></div>
       </div>
     </section>
-
     <section class="section" id="pasos">
       <div class="steps">
         <div class="step-card"><div class="step-num">1</div><div><b>Llamada de 15′</b></div><div class="mini">Me cuentas tu situación y calculamos el tiempo que puedes ahorrar.</div></div>
@@ -145,7 +118,6 @@
         <div class="step-card"><div class="step-num">4</div><div><b>Implantación</b></div><div class="mini">Dejo todo listo para que facturas y recibos se ordenen solos.</div></div>
       </div>
     </section>
-
     <section id="casos" class="section">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <h2 style="margin:0">Casos reales</h2>
@@ -157,7 +129,6 @@
         <div class="card"><b>📊 Resumen en Sheets</b><div class="mini">Registro claro para compartir con tu gestor.</div></div>
       </div>
     </section>
-
     <section class="section" id="book">
       <div class="card" style="display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap">
         <div>
@@ -167,37 +138,11 @@
         <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/juansalanvila/reunion-de-15-minutos'});return false;">Agendar ahora</button>
       </div>
     </section>
-
-    <footer>
-      © 2025 · Facturas ordenadas · Hecho en Canarias ·
-      <a href="proteccion_datos.html" target="_blank" rel="noopener">Protección de datos</a>
-    </footer>
+    <footer>© 2025 · Facturas ordenadas · Hecho en Canarias · <a href="proteccion_datos.html" target="_blank" rel="noopener">Protección de datos</a></footer>
   </div>
-
   <script>
-    function toggleWaitlist(){
-      const el=document.getElementById('waitlist');
-      if(!el) return;
-      el.classList.toggle('open');
-      if(el.classList.contains('open')) el.scrollIntoView({behavior:'smooth'});
-    }
-    (function(){
-      const form=document.getElementById('waitlist-form');
-      if(!form) return;
-      const ok=document.getElementById('wl-ok');
-      const err=document.getElementById('wl-err');
-      const btn=document.getElementById('wl-submit');
-      form.addEventListener('submit',async e=>{
-        e.preventDefault(); ok.style.display='none'; err.style.display='none';
-        btn.disabled=true; btn.textContent='Enviando…';
-        const fd=new FormData(form); const body=Object.fromEntries(fd.entries());
-        try{
-          const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-          if(r.ok){form.reset(); ok.style.display='block';} else {err.style.display='block';}
-        }catch{err.style.display='block';}
-        finally{btn.disabled=false; btn.textContent='Apuntarme a la lista';}
-      });
-    })();
+    function toggleWaitlist(){ const el=document.getElementById('waitlist'); if(!el) return; el.classList.toggle('open'); if(el.classList.contains('open')) el.scrollIntoView({behavior:'smooth'}); }
+    (function(){ const form=document.getElementById('waitlist-form'); if(!form) return; const ok=document.getElementById('wl-ok'); const err=document.getElementById('wl-err'); const btn=document.getElementById('wl-submit'); form.addEventListener('submit',async e=>{ e.preventDefault(); ok.style.display='none'; err.style.display='none'; btn.disabled=true; btn.textContent='Enviando…'; const fd=new FormData(form); const body=Object.fromEntries(fd.entries()); try{ const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); if(r.ok){form.reset(); ok.style.display='block';} else {err.style.display='block';} }catch{err.style.display='block';} finally{btn.disabled=false; btn.textContent='Apuntarme a la lista';} }); })();
   </script>
 </body>
 </html>
