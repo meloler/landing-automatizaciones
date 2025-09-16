@@ -90,9 +90,17 @@
         </div>
       </div>
       <div class="cta">
-        <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/juansalanvila/reunion-de-15-minutos'});return false;">Agendar 15′ gratis</button>
-        <button class="btn btn-ghost" onclick="toggleWaitlist()">Solicitar más info.</button>
-        <a class="btn btn-ghost" href="/faq.html">¿Dudas? <b>Ver FAQ</b></a>
+        <button class="btn btn-primary"
+  onclick="gtag('event','click_agendar',{location:'hero'}); Calendly.initPopupWidget({url:'https://calendly.com/juansalanvila/reunion-de-15-minutos'}); return false;">
+  Agendar 15′ gratis
+</button>
+        <button class="btn btn-ghost"
+  onclick="gtag('event','click_waitlist',{location:'hero'}); toggleWaitlist()">
+  Solicitar más info.
+</button>
+        <a class="btn btn-ghost" href="/faq.html"
+  onclick="gtag('event','click_faq',{location:'hero'});">
+  ¿Dudas? <b>Ver FAQ</b>
       </div>
       <div id="waitlist" class="collapsible">
         <form id="waitlist-form" style="margin-top:14px" class="card">
