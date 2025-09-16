@@ -10,13 +10,26 @@
   <style>
     :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--text:#e2e8f0;--primary:#22d3ee;--accent:#a78bfa;--ring:rgba(34,211,238,.35)}
     *{box-sizing:border-box}
-    body{margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text);
+    body{
+      margin:0; font-family:Inter, system-ui, sans-serif; color:var(--text);
       background: radial-gradient(1000px 600px at 10% -10%, rgba(167,139,250,.15), transparent),
-                  radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent), var(--bg)}
+                  radial-gradient(800px 500px at 90% 10%, rgba(34,211,238,.12), transparent), var(--bg)
+    }
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     h1{font-size:clamp(28px,4vw,40px);margin:10px 0}
-    a.btn{display:inline-block;border-radius:14px;padding:10px 14px;font-weight:700;border:1px solid rgba(255,255,255,.14);color:var(--text);text-decoration:none}
+
+    /* === ENLACES EN BLANCO (global) === */
+    a{ color:#ffffff; text-decoration:underline; }
+    a:hover{ color:#ffffff; background:rgba(255,255,255,.08); }
+
+    /* Botones-enlace */
+    a.btn{
+      display:inline-block;border-radius:14px;padding:10px 14px;font-weight:700;
+      border:1px solid rgba(255,255,255,.14);color:#ffffff;text-decoration:none
+    }
+    a.btn:hover{ background:rgba(255,255,255,.1) }
+
     .mini{font-size:14px;color:var(--muted)}
     .faq{margin-top:18px}
     details{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;margin:12px 0}
