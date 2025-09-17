@@ -160,6 +160,8 @@
     </section>
     <footer>© 2025 · Facturas ordenadas · Hecho en Canarias · <a href="proteccion_datos.html" target="_blank" rel="noopener">Protección de datos</a></footer>
   </div>
+
+  <!-- Script mínimo para mostrar/ocultar el formulario -->
   <script>
     function toggleWaitlist(){
       const el=document.getElementById('waitlist');
@@ -167,60 +169,54 @@
       el.classList.toggle('open');
       if(el.classList.contains('open')) el.scrollIntoView({behavior:'smooth'});
     }
+  </script>
 
-    (function(){
+  <!-- Tu script para arreglar el bug del botón (reemplaza al anterior) -->
+  <script>
+    (function () {
       const form = document.getElementById('waitlist-form');
-      if(!form) return;
+      if (!form) return;
       const ok  = document.getElementById('wl-ok');
       const err = document.getElementById('wl-err');
       const btn = document.getElementById('wl-submit');
+      const idleCopy = btn?.textContent.trim() ?? 'Enviar';
 
-      // 🔒 Blindaje: impide que otros scripts cambien el texto del botón
-      const ALLOWED = new Set(['Enviar','Enviando…']);
+      const ALLOWED = new Set([idleCopy, 'Enviando…']);
       const observer = new MutationObserver(() => {
-        if (!btn || btn.hidden) return;
-        const t = btn.textContent.trim();
-        if (btn.disabled) return;         // mientras envía, permitimos "Enviando…"
-        if (!ALLOWED.has(t)) btn.textContent = 'Enviar';
+        if (!btn || btn.hidden || btn.disabled) return;
+        if (!ALLOWED.has(btn.textContent.trim())) btn.textContent = idleCopy;
       });
-      observer.observe(btn, { childList:true, characterData:true, subtree:true });
+      observer.observe(btn, { childList: true, characterData: true, subtree: true });
 
-      form.addEventListener('submit', async (e)=>{
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        ok.style.display='none';
-        err.style.display='none';
+        ok.style.display = 'none';
+        err.style.display = 'none';
 
-        // Estado "enviando"
         btn.disabled = true;
         btn.textContent = 'Enviando…';
 
-        try{
-          const fd   = new FormData(form);
-          const body = Object.fromEntries(fd.entries());
-
+        try {
+          const body = Object.fromEntries(new FormData(form).entries());
           const r = await fetch('/api/waitlist', {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify(body)
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
           });
 
-          if(r.ok){
+          if (r.ok) {
             form.reset();
-            ok.style.display='block';
-            // ✅ Éxito: ocultamos el botón y desenchufamos el observer
-            btn.hidden = true;
-            observer.disconnect();
+            ok.style.display = 'block';
           } else {
-            err.style.display='block';
-            btn.disabled = false;
-            btn.textContent = 'Enviar';
+            err.style.display = 'block';
           }
-        } catch(_){
-          err.style.display='block';
+        } catch (_) {
+          err.style.display = 'block';
+        } finally {
+          btn.hidden = false;
           btn.disabled = false;
-          btn.textContent = 'Enviar';
+          btn.textContent = idleCopy;
         }
-        // ❌ No hay "finally" que cambie el copy a otra cosa
       });
     })();
   </script>
