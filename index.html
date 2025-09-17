@@ -114,7 +114,7 @@
               <label for="wl-consent">He leído y acepto la <a href="proteccion_datos.html" target="_blank" rel="noopener noreferrer">política de protección de datos</a>.</label>
             </div>
             <input type="hidden" name="source" value="landing-hero" />
-            <button id="wl-submit" class="btn btn-primary" type="submit">Enviar</button>
+            <button id="wl-submit" class="btn btn-primary" type="submit" data-idle-copy="Enviar">Enviar</button>
             <p id="wl-ok" class="mini" style="display:none;color:lightgreen">¡Listo! En breves recibirás un correo con más información.</p>
             <p id="wl-err" class="mini" style="display:none;color:#fca5a5">Ups, algo falló. Inténtalo de nuevo.</p>
           </div>
@@ -179,11 +179,12 @@
       const ok  = document.getElementById('wl-ok');
       const err = document.getElementById('wl-err');
       const btn = document.getElementById('wl-submit');
-      const idleCopy = btn?.textContent.trim() ?? 'Enviar';
+      if (!btn) return;
+      const idleCopy = btn.dataset.idleCopy ?? 'Enviar';
 
       const ALLOWED = new Set([idleCopy, 'Enviando…']);
       const observer = new MutationObserver(() => {
-        if (!btn || btn.hidden || btn.disabled) return;
+        if (btn.hidden || btn.disabled) return;
         if (!ALLOWED.has(btn.textContent.trim())) btn.textContent = idleCopy;
       });
       observer.observe(btn, { childList: true, characterData: true, subtree: true });
