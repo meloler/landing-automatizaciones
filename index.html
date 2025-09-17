@@ -175,6 +175,16 @@
       const err = document.getElementById('wl-err');
       const btn = document.getElementById('wl-submit');
 
+      // 🔒 Blindaje: impide que otros scripts cambien el texto del botón
+      const ALLOWED = new Set(['Enviar','Enviando…']);
+      const observer = new MutationObserver(() => {
+        if (!btn || btn.hidden) return;
+        const t = btn.textContent.trim();
+        if (btn.disabled) return;         // mientras envía, permitimos "Enviando…"
+        if (!ALLOWED.has(t)) btn.textContent = 'Enviar';
+      });
+      observer.observe(btn, { childList:true, characterData:true, subtree:true });
+
       form.addEventListener('submit', async (e)=>{
         e.preventDefault();
         ok.style.display='none';
@@ -197,11 +207,11 @@
           if(r.ok){
             form.reset();
             ok.style.display='block';
-            // ✅ Ocultamos el botón tras éxito para evitar confusión
-            btn.style.display = 'none';
+            // ✅ Éxito: ocultamos el botón y desenchufamos el observer
+            btn.hidden = true;
+            observer.disconnect();
           } else {
             err.style.display='block';
-            // Restauramos el botón sólo en error
             btn.disabled = false;
             btn.textContent = 'Enviar';
           }
@@ -210,7 +220,7 @@
           btn.disabled = false;
           btn.textContent = 'Enviar';
         }
-        // ❌ Nada en "finally" que cambie el texto a "Apuntarme a la lista"
+        // ❌ No hay "finally" que cambie el copy a otra cosa
       });
     })();
   </script>
