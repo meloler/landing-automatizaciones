@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K45PJD97Y2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-K45PJD97Y2');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web Facturas · Automatiza y ordena tus facturas en Drive</title>
+
+  <!-- SEO básico -->
+  <meta name="description" content="Script que clasifica automáticamente facturas y tickets en tu Google Drive. Funciona con Gmail y Drive, y puede adaptarse a otros proveedores de correo." />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f172a; --card:#0b1220; --muted:#94a3b8; --text:#e2e8f0;
+      --primary:#22d3ee; --accent:#a78bfa; --ring:rgba(34,211,238,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:
+      radial-gradient(1000px 800px at 85% 20%, rgba(167,139,250,.12), transparent),
+      radial-gradient(800px 600px at 20% 0%, rgba(34,211,238,.10), transparent),
+      var(--bg);
+    }
+    /* Simplificar fondo en móvil para evitar bandas bajo las tarjetas */
+    @media(max-width:640px){
+      body{background:
+        radial-gradient(600px 420px at 110% -20%, rgba(167,139,250,.10), transparent),
+        radial-gradient(520px 380px at -10% -10%, rgba(34,211,238,.08), transparent),
+        var(--bg);
+      }
+    }
+    a{color:#fff;text-decoration:underline}
+    a.btn{ text-decoration:none }
+
+    .wrap{max-width:1080px;margin:0 auto;padding:24px}
+    @media(max-width:640px){.wrap{padding:16px}}
+    
+
+    /* Navbar */
+    .navbar{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-row{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent))}
+    .nav-links{display:flex;gap:16px;flex-wrap:wrap}
+    /* Mobile nav */
+    @media(max-width:720px){
+      .nav-links{display:none;position:absolute;top:58px;left:12px;right:12px;background:rgba(11,18,32,.95);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px;flex-direction:column;gap:6px}
+      .nav-links.open{display:flex}
+      .nav-links a{padding:12px;border-radius:10px}
+    }
+    .menu-btn{display:none;background:transparent;border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:10px;padding:8px 10px}
+    @media(max-width:720px){.menu-btn{display:inline-flex;align-items:center;gap:8px}}
+    
+    .nav-links a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:10px}
+    .nav-links a:hover{background:rgba(255,255,255,.06);color:#fff}
+
+    /* Hero */
+    .hero{padding:64px 0 32px;display:grid;gap:22px;align-items:center;justify-items:center;text-align:center}
+    @media(max-width:640px){.hero{padding:36px 0 24px}}
+    @media(max-width:720px){.hero > div:first-child{ text-align:center }}
+    
+    
+    @media(min-width:920px){.hero{grid-template-columns:1.1fr .9fr;gap:36px}}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--muted);font-size:12px}
+    h1{font-size:clamp(32px,4vw,56px);line-height:1.05;margin:6px 0 10px}
+    .lead{color:var(--muted);text-align:center}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;justify-content:center}
+    @media(max-width:640px){.cta .btn{flex:0 0 auto}}
+    
+    .btn{border:0;border-radius:14px;padding:14px 18px;font-weight:800;font-size:1rem;cursor:pointer;transition:.2s}
+    .btn-primary{background:linear-gradient(90deg,var(--primary),var(--accent));color:#0b1220}
+    .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.14)}
+    .mock{position:relative;padding-top:56.25%;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(2,6,23,.35)}
+    .mock iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:16px;}
+
+    /* Partners */
+    .section{padding:38px 0}
+    /* (limpiado) sin overlays por sección en móvil/desktop */
+    .center{text-align:center}
+    .logos{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:center}
+    @media(max-width:800px){.logos{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.logos{grid-template-columns:repeat(2,1fr)}}
+    .logo-pill{height:40px;border-radius:999px;border:1px dashed rgba(255,255,255,.12);opacity:.7}
+
+    /* Benefits */
+    .grid-3{display:grid;gap:16px;justify-items:center;text-align:left;align-items:stretch}
+    @media(min-width:900px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(2,6,23,.35);margin-inline:auto;max-width:740px}
+    .benefit{min-height:140px}
+    .testimonial{min-height:140px}
+
+    /* How it works */
+    .steps{display:grid;gap:18px;justify-items:center;text-align:center;align-items:stretch}
+    @media(min-width:900px){.steps{grid-template-columns:repeat(3,1fr)}}
+    .step{min-height:132px;padding:22px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.06)}padding:22px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.06)}
+    .step-num{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;border:1px solid var(--ring);font-weight:800;margin-bottom:8px}
+
+    /* Pricing */
+    .pricing{display:grid;gap:18px;align-items:stretch}
+    @media(max-width:640px){.price .btn{width:auto}}
+    @media(min-width:980px){.pricing{grid-template-columns:repeat(3,1fr)}}
+    .price{position:relative;display:flex;flex-direction:column;min-height:320px}
+    .price ul{margin-bottom:16px}
+    .price .btn{margin-top:auto;align-self:flex-start}
+    .badge{position:absolute;top:14px;right:14px;font-size:12px;color:#0b1220;background:linear-gradient(90deg,var(--primary),var(--accent));padding:6px 10px;border-radius:999px;font-weight:800}
+    .price h3{margin:6px 0}
+
+    /* Testimonials */
+    .testi{display:grid;gap:16px;justify-items:center;align-items:stretch}
+    @media(min-width:980px){.testi{grid-template-columns:repeat(4,1fr)}}
+    @media(min-width:980px){.testi{grid-template-columns:repeat(4,1fr)}}
+    .quote{font-size:14px;color:var(--muted)}
+
+    /* FAQ */
+    details{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 16px}
+    summary{cursor:pointer;font-weight:700}
+
+    footer{color:var(--muted);font-size:12px;padding:28px 0 40px;text-align:center}
+    @media(max-width:640px){footer{padding-bottom:56px}}
+    
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="wrap nav-row">
+      <div class="brand"><span class="dot"></span> Web Facturas</div>
+      <button class="menu-btn" aria-controls="site-menu" aria-expanded="false" id="menuBtn">Menú 
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav class="nav-links" id="site-menu">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#precios">Precios</a>
+        <a href="#faq">FAQ</a>
+        <a href="#cta" class="btn btn-primary" style="padding:8px 14px">Probar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="wrap hero" id="hero">
+      <div>
+        <span class="eyebrow">+1000 archivos ordenados sin tocar el ratón</span>
+        <h1>Tu contabilidad, siempre ordenada. <br/>Automática en tu Google Drive.</h1>
+        <p class="lead">Un script que clasifica <strong>facturas</strong> y <strong>tickets</strong> desde tu correo, los guarda en carpetas por proveedor/fecha y los deja listos para compartir con tu asesor. Funciona con Gmail y Drive; también puede adaptarse a otros servicios de correo.</p>
+        <div class="cta">
+          <a href="#cta" class="btn btn-primary" onclick="gtag('event','click_cta',{location:'hero'})">Quiero verlo</a>
+          <a href="#como-funciona" class="btn btn-ghost">Cómo funciona</a>
+        </div>
+        <p class="lead" style="font-size:13px;margin-top:6px;color:var(--muted)">Sin instalaciones raras. Control total en tu cuenta.</p>
+      </div>
+      <div>
+        <!-- Demo / vídeo -->
+        <div class="mock">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERS -->
+    <section class="wrap section center" aria-label="Partners">
+      <div class="lead" style="margin-bottom:12px;color:var(--muted)">Con la confianza de profesionales que usan Gmail y Drive</div>
+      <div class="logos" aria-hidden="true">
+        <div class="logo-pill"></div><div class="logo-pill"></div><div class="logo-pill"></div><div class="logo-pill"></div><div class="logo-pill"></div><div class="logo-pill"></div>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="wrap section" id="beneficios">
+      <h2 class="center" style="margin:0 0 12px">Beneficios</h2>
+      <div class="grid-3">
+        <div class="card benefit"><strong>⏱️ Tiempo ganado</strong><div class="lead">Olvida descargar, renombrar y archivar. El flujo trabaja por ti.</div></div>
+        <div class="card benefit"><strong>✅ Todo localizado</strong><div class="lead">Carpetas por proveedor/año/mes en tu Drive. Fáciles de compartir.</div></div>
+        <div class="card benefit"><strong>🧠 Menos errores</strong><div class="lead">Detección de duplicados y filtros que evitan clasificar mal.</div></div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="wrap section" id="como-funciona">
+      <h2 class="center" style="margin:0 0 12px">Cómo funciona</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><strong>Conecta tu correo</strong><div class="lead">Lee adjuntos de Gmail (y puede adaptarse a otros proveedores IMAP).</div></div>
+        <div class="step"><div class="step-num">2</div><strong>Clasifica al vuelo</strong><div class="lead">Distingue facturas y tickets; crea carpetas y mueve archivos automáticamente.</div></div>
+        <div class="step"><div class="step-num">3</div><strong>Comparte con tu asesor</strong><div class="lead">Tu Drive queda ordenado por meses; acceso en 1 clic para tu gestor.</div></div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="wrap section" id="precios">
+      <h2 class="center" style="margin:0 0 12px">Precios</h2>
+      <p class="center lead" style="margin:0 0 18px;color:var(--muted)">Empieza con la configuración asistida. Sin permanencias.</p>
+      <div class="pricing">
+        <div class="card price">
+          <h3>Básico</h3>
+          <div class="lead">Ideal para autónomos que quieren orden sin complicaciones.</div>
+          <h4>100€ <span class="lead" style="font-weight:400">/ setup único</span></h4>
+          <ul class="lead"><li>Instalación en tu cuenta</li><li>Carpetas y filtros base</li><li>Soporte por email (7 días)</li></ul>
+          <a class="btn btn-ghost" href="#cta">Empezar</a>
+        </div>
+        <div class="card price" style="border:1px solid var(--ring)">
+          <span class="badge">Más popular</span>
+          <h3>Profesional</h3>
+          <div class="lead">Para quien recibe muchas facturas y quiere más control.</div>
+          <h4>200€ <span class="lead" style="font-weight:400">/ setup único</span></h4>
+          <ul class="lead"><li>Todo lo del Básico</li><li>Reglas personalizadas</li><li>Soporte 30 días</li></ul>
+          <a class="btn btn-primary" href="#cta">Quiero este</a>
+        </div>
+        <div class="card price">
+          <h3>Avanzado</h3>
+          <div class="lead">A medida para empresas con flujos especiales.</div>
+          <h4>Desde 300€</h4>
+          <ul class="lead"><li>Integración con otros correos</li><li>Adaptación a Drive compartidos</li><li>Sesión de formación</li></ul>
+          <a class="btn btn-ghost" href="#cta">Solicitar propuesta</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="wrap section" id="testimonios">
+      <h2 class="center" style="margin:0 0 12px">Opiniones</h2>
+      <div class="testi">
+        <div class="card testimonial"><strong>Laura · Arquitecta</strong><p class="quote">“Dejé de perseguir correos y adjuntos. En dos días me acostumbré y ahora no podría volver atrás.”</p></div>
+        <div class="card testimonial"><strong>Víctor · Ecommerce</strong><p class="quote">“Mi gestor feliz y yo más. Todo llega ya ordenado por meses.”</p></div>
+        <div class="card testimonial"><strong>Ana · Clínica</strong><p class="quote">“Lo instalamos en Drive compartido y funciona perfecto.”</p></div>
+        <div class="card testimonial"><strong>Pedro · Agencia</strong><p class="quote">“El plan profesional me dio justo la personalización que necesitaba.”</p></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="wrap section" id="faq">
+      <h2 class="center" style="margin:0 0 12px">Preguntas frecuentes</h2>
+      <div class="grid-3">
+        <details class="card"><summary>¿Funciona sólo con Gmail?</summary><div class="lead">Está optimizado para Gmail + Drive. Se puede adaptar a otros proveedores (IMAP/SMTP) si lo necesitas.</div></details>
+        <details class="card"><summary>¿Toco algo de mi correo?</summary><div class="lead">No. Se ejecuta con permisos mínimos y tú conservas el control total.</div></details>
+        <details class="card"><summary>¿Qué pasa con mis datos?</summary><div class="lead">Se procesan en tu propia cuenta. Consulta la <a href="/proteccion_datos.html">política de protección de datos</a>.</div></details>
+      </div>
+      <p class="center" style="margin-top:14px"><a href="/faq.html">Ver todas las FAQs →</a></p>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="wrap section" id="cta">
+      <div class="card" style="padding:28px;display:grid;gap:10px;place-items:center;text-align:center">
+        <h2 style="margin:0">¿Lo vemos juntos en 10′?</h2>
+        <p class="lead" style="margin:0;color:var(--muted)">Déjame tu email y te envío cómo probarlo.</p>
+        <form id="waitlist-form" style="width:100%;max-width:560px;display:grid;gap:12px">
+          <div style="display:grid;gap:8px">
+            <label class="lead" for="wl-name" style="font-size:14px;color:var(--muted)">Nombre</label>
+            <input id="wl-name" name="name" required placeholder="Tu nombre" style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0b1220;color:#fff"/>
+          </div>
+          <div style="display:grid;gap:8px">
+            <label class="lead" for="wl-email" style="font-size:14px;color:var(--muted)">Email</label>
+            <input id="wl-email" type="email" name="email" required placeholder="tucorreo@empresa.com" style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0b1220;color:#fff"/>
+          </div>
+          <div style="display:grid;gap:8px">
+            <label class="lead" for="wl-note" style="font-size:14px;color:var(--muted)">¿Tu sector?</label>
+            <input id="wl-note" name="note" placeholder="Hostelería, comercio, construcción…" style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0b1220;color:#fff"/>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">
+            <input type="checkbox" id="wl-consent" required />
+            <label for="wl-consent">Acepto la <a href="/proteccion_datos.html">política de protección de datos</a>.</label>
+          </div>
+          <input type="hidden" name="source" value="landing-cta" />
+          <button id="wl-submit" class="btn btn-primary" type="submit" data-idle-copy="Enviar">Enviar</button>
+          <p id="wl-ok" class="lead" style="display:none;color:#86efac">¡Listo! Te escribo en breve.</p>
+          <p id="wl-err" class="lead" style="display:none;color:#fca5a5">Ups, algo falló. Inténtalo de nuevo.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> · Web Facturas · <a href="/proteccion_datos.html">Protección de datos</a> · <a href="/faq.html">FAQ</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Envío del formulario (placeholder simple) -->
+  <script>
+    (function(){
+      const form = document.getElementById('waitlist-form');
+      if(!form) return;
+      const ok = document.getElementById('wl-ok');
+      const err = document.getElementById('wl-err');
+      const btn = document.getElementById('wl-submit');
+      const idleCopy = btn?.dataset.idleCopy ?? 'Enviar';
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try{
+          btn.disabled = true; btn.textContent = 'Enviando…';
+          // Aquí conectarías tu endpoint real (Google Apps Script / Make / etc.)
+          await new Promise(r=>setTimeout(r,800));
+          ok.style.display='block'; err.style.display='none';
+        }catch(_){ err.style.display='block'; }
+        finally{ btn.disabled=false; btn.textContent=idleCopy; }
+      });
+    })();
+  </script>
+  <script>
+    // Mobile menu toggle
+    (function(){
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('site-menu');
+      if(!btn||!menu) return;
+      btn.addEventListener('click',()=>{
+        const open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true':'false');
+      });
+    })();
+  </script>
+</body>
+</html>
